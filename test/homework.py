@@ -11,3 +11,6 @@ def homework(x,*n):
         x = x * i
         
     return x
+
+def dicFunc(**d):
+    print d
