@@ -1,5 +1,5 @@
 #!user/bin/env python2.7
-#-*- coding = utf-8 -*-
+#-*- coding: utf-8 -*-
 
 'class test'
 __author__ = "star"
@@ -13,6 +13,6 @@ class star(object):
         print("name = %s,age = %s" % (self.name,self.age))
 
 
-a = star("star",15)
+a = star("志坤",15)
 print(a.name,a.age)
 a.print_log()
