@@ -1,0 +1,6 @@
+python 学习笔记
+
+1、模块规格：
+#-*- coding: utf-8 -*-
+'功能介绍'
+__author__ = 'star'
