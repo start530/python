@@ -1,6 +1,57 @@
 python 学习笔记
 
+模块安装：
+在终端输入 pip，如果没有这个命令，说明没有安装。按照下面步骤安装：
+1、到这个网站下载pip：https://pypi.python.org/pypi/pip#downloads
+2、解压成功后，通过终端进入该目录，运行命令：
+python setup.py install 
+上面这一步有可能会提示第六行的setuptool没有这个模块，这时候去下载一个：
+https://pypi.python.org/pypi/setuptools#files
+解压后，运行：
+python setup.py install.
+3、setuptool模块安装成功后，再进入pip解压后的文件，再次运行：python setup.py install
+4、没意外的话，pip就安装完成了。在终端输入pip，如果提示还没这个命令，那么就修改系统环境变量，
+将下面路径放到系统path里：
+C:\Python27\Scripts
+5、所有都好后，如果要安装新的模块，直接通过pip install xx安装即可
+6、推荐模块：
+
 1、模块规格：
 #-*- coding: utf-8 -*-
 '功能介绍'
 __author__ = 'star'
+
+2、引入模块，例如和io相关的：
+import os
+如果是调用一个模块中的某个函数，可以这样：
+from os import 函数名
+
+3、如果是在git bash 上运行python，想进入python调试模式，要在命令行输入：
+winpty python 
+如果是在cmd上运行，则直接运行：python 即可。
+
+
+IO（文件夹操作）相关：
+1、获取当前文件夹下所有文件
+listdir = os.listdir(os.getcwd())
+上面注意下，os.getcwd() 函数作用是获取当前路径。
+也可以直接用'.'来表示当前目录：
+listdir = os.listdir('.')
+
+2、修改文件名：
+os.rename(oldname,new_name)
+
+3、哈希算法：
+两个特点：1，基本是不可逆的；2，将任意长度的输入转成固定长度的输出
+import hashlib
+md5 = hashlib.md5()
+md5.update('star is so cool'.encode('utf-8'))
+pwd = md5.hexdigest()
+#pwd 就是通过哈希算法生成的固定长度密文，并且是不可逆的。
+
+4、json的使用
+import json
+#将字典转成json
+json_str = json.dumps(dic)
+#将json转成dic
+dic = json.loads(json_str)
