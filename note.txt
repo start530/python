@@ -55,3 +55,17 @@ import json
 json_str = json.dumps(dic)
 #将json转成dic
 dic = json.loads(json_str)
+
+5、让python在读取文件的时候可以读取中文：
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
+6、python中，range和xranged的差别：
+range生成的是一list，例如range(1,5) 运行后[1,2,3,4,5]
+而xrange生成的是一个生成器，例如：
+>>> xrange(5)
+xrange(5)
+>>> list(xrange(5))
+[0, 1, 2, 3, 4]
+结论：要生成很大的数字序列手，用xrange会比range性能优很多，因为不需要一上来就开辟一块很大的内存空间。
