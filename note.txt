@@ -72,3 +72,10 @@ xrange(5)
 
 7、any(x):
 用来判断对象是否为空，如果是空，0，false，返回False，如果不为空，0，false，则返回true。
+
+8、xlrd 使用
+import xlrd
+workbook = xlrd.open_workbook(filename)
+sheet = workbook.sheet_by_index(x)
+cell = sheet.cell(row,col)
+cell.ctype 如果=1，表示字符串，2,表示数字（还未理清）,0表示为空

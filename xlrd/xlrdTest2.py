@@ -34,8 +34,16 @@ for sheet_idx in range(0,sheet_num):
     #获取关键词字段keyword
     keywords = []
     for col in xrange(cols):
-        keywords.append(sheet.cell(1,col).value)
+        keywords.append(str(sheet.cell(1,col).value))
     print keywords
+
+    #判断关键词id的唯一性
+    excel_id_dic = {}
+    for k in xrange(3,rows):
+        cell_id = int(sheet.cell(k,0).value)
+        if cell_id in excel_id_dic:
+            print '[warning] duplicated data id: %d, all previous value will be ignored!~' % (cell_id)
+        excel_id_dic[cell_id] = 0
 
 
     #通过行数和列数，取得单元格cell的value
@@ -51,16 +59,45 @@ for sheet_idx in range(0,sheet_num):
             #如果第二行为空，则表示这格子是注释。
             if not any(sheet.cell(1,col).value):
                 continue
+            #如果字段以_开头，表示这列是策划用的，无需编译
+            if str(keywords[col]).startswith('_'):
+                continue
             
-            colType = sheet.cell(2,col).value
-            cell_val = sheet.cell(row,col).value
+            cellType = sheet.cell(2,col).value
+            cell = sheet.cell(row,col)
+            cell_val = cell.value
 
-            writedate = writedate + '\t\t' + '["' + keywords[col] + '"]='
+            writedate = writedate + '\t\t' + '["' + keywords[col] + '"] = '
 
-            if colType == 'int':
-                 writedate = writedate + str(int(cell_val)) + ',\n'
-            elif colType == 'string':
-                writedate = writedate + str(cell_val) + ',\n'
+            #根据字段类型去调整数值 如果为空值 依据字段类型 填上默认值
+            v = 0
+            if cellType == 'string':
+                if cell.ctype == 0:
+                    v = '\'\''
+                else:
+                    v = '\'%s\'' %(cell_val)
+            if cellType == 'int':
+                if cell.ctype == 0:
+                    v = -1
+                else:
+                    v = int(cell_val)
+            if cellType == 'float':
+                if cell.ctype == 0:
+                    v = -1
+                else:
+                    v = float(cell_val)
+            if cellType == 'table':
+                if cell.ctype == 0:
+                    v = {}
+                else:
+                    v = cell_val
+
+            writedate = writedate + str(v) + ',\n'
+
+            # if cellType == 'int':
+            #      writedate = writedate + str(int(cell_val)) + ',\n'
+            # elif cellType == 'string':
+            #     writedate = writedate + str(cell_val) + ',\n'
 
             # if col == 0:
             #     #writedate = writedate + '\t' + '["' + cell_val + '"]' + ' = ' + '{'
