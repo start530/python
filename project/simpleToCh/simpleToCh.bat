@@ -1,0 +1,3 @@
+python simpleToCh.py
+
+pause
