@@ -85,3 +85,107 @@ cell.ctype 如果=1，表示字符串，2,表示数字（还未理清）,0表示
 在中文字符串前加上 u ，例如：
 print(u"德玛西亚"")
 这样就正常了
+
+10、正则表达式
+
+\w      匹配字母数字及下划线
+\W      匹配f非字母数字下划线
+\s      匹配任意空白字符，等价于[\t\n\r\f]
+\S      匹配任意非空字符
+\d      匹配任意数字
+\D      匹配任意非数字
+\A      匹配字符串开始
+\Z      匹配字符串结束，如果存在换行，只匹配换行前的结束字符串
+\z      匹配字符串结束
+\G      匹配最后匹配完成的位置
+\n      匹配一个换行符
+\t      匹配一个制表符
+^       匹配字符串的开头
+$       匹配字符串的末尾
+.       匹配任意字符，除了换行符，re.DOTALL标记被指定时，则可以匹配包括换行符的任意字符
+[....]  用来表示一组字符，单独列出：[amk]匹配a,m或k
+[^...]  不在[]中的字符：[^abc]匹配除了a,b,c之外的字符
+*       匹配0个或多个的表达式
++       匹配1个或者多个的表达式
+?       匹配0个或1个由前面的正则表达式定义的片段，非贪婪方式
+{n}     精确匹配n前面的表示
+{m,m}   匹配n到m次由前面的正则表达式定义片段，贪婪模式
+a|b     匹配a或者b
+()      匹配括号内的表达式，也表示一个组
+
+来看一个复杂的例子：\d{3}\s+\d{3,8}。
+我们来从左到右解读一下：
+\d{3}表示匹配3个数字，例如'010'；
+\s可以匹配一个空格（也包括Tab等空白符），所以\s+表示至少有一个空格，例如匹配' '，' '等；
+\d{3,8}表示3-8个数字，例如'1234567'。
+综合起来，上面的正则表达式可以匹配以任意个空格隔开的带区号的电话号码。
+如果要匹配'010-12345'这样的号码呢？由于'-'是特殊字符，在正则表达式中，要用'\'转义，所以，上面的正则是\d{3}\-\d{3,8}。
+
+re.S:很多时候匹配的内容是存在换行的问题的，这个时候的就需要用到匹配模式re.S来匹配换行的内容
+\s*? 这种用法其实就是为了解决有的有换行，有的没有换行的问题
+(<a.*?>)? 这种用法是因为html中有的有a标签，有的没有的，？表示匹配一个或0个，正好可以用于匹配
+如果没有<a.*?>这个字段，依旧是可以被匹配到
+例如：
+-----
+<li data-view="2">一路上有你</li>
+<li data-view="6"><a href="/4.mp3" singer="beyond">光辉岁月</a></li>
+-----
+两条都可以匹配到
+
+
+------------------
+爬虫模块
+------------------
+
+测试网址：
+http://httpbin.org
+
+1、表头：在使用python爬虫爬取数据的时候，经常会遇到一些网站的反爬虫措施，一般就是针对于headers中的User-Agent，如果没有对headers进行设置，User-Agent会声明自己是python脚本,而如果网站有反爬虫的想法的话，必然会拒绝这样的连接。而修改headers可以将自己的爬虫脚本伪装成浏览器的正常访问，来避免这一问题。
+headers={'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit'}
+
+2、requests.text gbk编码问题
+解决办法：response.encoding = 'utf-8'
+
+3、下载图片
+首先在requests的时候，需要加入参数 流，stream=True
+response = requests.get(url,stream=True)
+然后将流输出到新建文件里，
+with open('img','wb') as fd:
+	for chunk in response.iter_content(128):
+		fd.write(chunk)
+
+这样就会下载图片img
+
+
+4、beautifulSoup：
+https://beautifulsoup.readthedocs.io/zh_CN/latest/
+
+soup = BeautifulSoup(html,lxml)
+
+find_all() 和find()差别：
+find_all()没有找到目标是返回空列表；find()没有找到目标是返回None
+
+find_all(name,attrs,...),可以根据标签名，属性，内容查找文档
+soup.find_all('ul'),，反会一个列表
+soup.find_all(attrs={'id':'list-1'})
+soup.find_all(text='foo')
+
+find
+find(name,attrs,recursive,text,**kwargs)
+find返回的匹配结果的第一个元素
+
+其他一些类似的用法：
+find_parents()返回所有祖先节点，find_parent()返回直接父节点。
+find_next_siblings()返回后面所有兄弟节点，find_next_sibling()返回后面第一个兄弟节点。
+find_previous_siblings()返回前面所有兄弟节点，find_previous_sibling()返回前面第一个兄弟节点。
+find_all_next()返回节点后所有符合条件的节点, find_next()返回第一个符合条件的节点
+find_all_previous()返回节点后所有符合条件的节点, find_previous()返回第一个符合条件的节点
+
+在beautifulSoup 使用正则表达式
+如果传入正则表达式作为参数,Beautiful Soup会通过正则表达式的 match() 来匹配内容.下面例子中找出所有以b开头的标签,这表示<body>和<b>标签都应该被找到:
+
+import re
+for tag in soup.find_all(re.compile("^b")):
+    print(tag.name)
+# body
+# b
