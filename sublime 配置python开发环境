@@ -1,0 +1,15 @@
+sublime 配置python开发环境
+------------
+
+1、先将sublime关联python的库，默认是环境变量的路径，由于是使用anaconda，所以要修改下：
+点击[Preference]-[Browse Packages]-在弹出的文件夹找到python(没有就创建)，
+找到文件Python.sublime-build，并打开。
+2. 修改以下内容：（主要还是增加path）
+{
+"cmd": ["python", "-u", "$file"],
+"path":"F:/Program Files/Python27",
+"file_regex": "^[ ]*File \"(...*?)\", line ([0-9]*)",
+"selector": "source.python"
+}
+
+把path里面的内容修改为编译器的安装目录即可。保存代码，ctrl+b便可以运行了
