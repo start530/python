@@ -16,3 +16,7 @@ class star(object):
 a = star("志坤",15)
 print(a.name,a.age)
 a.print_log()
+
+
+if __name__ == '__main__':
+	print 'hahah'

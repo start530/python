@@ -67,6 +67,7 @@ def get_dbinfo_by_bs4():
       #  print book_title
 
 
+
 if __name__ == '__main__':
     # get_douban_book()
     get_dbinfo_by_bs4()
